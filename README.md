@@ -13,7 +13,6 @@ Built with Next.js and AI technology, this open-source template helps developers
 - User authentication and registration
 - AI-powered chatbot for DSA queries
 - Interactive problem-solving guidance
-- Progress tracking and learning paths
 
 ## Technologies Used
 

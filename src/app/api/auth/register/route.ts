@@ -9,7 +9,7 @@ import clientPromise from "@/lib/mongodb";
 
 /**
  * @dev POST handler for user registration
- * Validates input, checks for existing users, and creates new user with hashed password
+ * Validates input, checks for existing email, and creates new user with hashed password
  */
 export async function POST(request: Request) {
   try {
@@ -25,13 +25,11 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const users = client.db().collection('users');
 
-    const existingUser = await users.findOne({
-      $or: [{ email }, { username }]
-    });
+    const existingUser = await users.findOne({ email });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "User already exists" },
+        { error: "Email already registered" },
         { status: 400 }
       );
     }
@@ -46,7 +44,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(
-      { message: "User created successfully" },
+      { message: "Registration successful" },
       { status: 201 }
     );
   } catch (error) {

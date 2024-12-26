@@ -5,9 +5,9 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
@@ -31,9 +31,17 @@ const funnyMessages = [
  */
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+
+  useEffect(() => {
+    if (searchParams?.get('registered') === 'true') {
+      setSuccess('Registration successful! Please log in with your credentials.');
+    }
+  }, [searchParams]);
 
   /**
    * @dev Handles form submission and authentication
@@ -81,27 +89,34 @@ export default function LoginPage() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="mt-6 text-center text-3xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-              Welcome Back, Problem Solver!
+              Welcome Back!
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              Ready to crack some LeetCode problems?{' '}
-              <Link href="/auth/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Or start your DSA journey
-              </Link>
+              Ready to continue your DSA journey?
             </p>
           </motion.div>
 
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="bg-red-50 text-red-500 p-3 rounded-lg text-sm text-center font-medium"
-              >
-                {error}
-              </motion.div>
-            )}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-red-50 text-red-500 p-4 rounded-lg text-center"
+            >
+              {error}
+            </motion.div>
+          )}
 
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-green-50 text-green-600 p-4 rounded-lg text-center"
+            >
+              {success}
+            </motion.div>
+          )}
+
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
