@@ -96,5 +96,3 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 Please open an issue in the GitHub repository for any queries or support.
-# dsa-gpt-tutor
-# dsa-gpt-tutor
